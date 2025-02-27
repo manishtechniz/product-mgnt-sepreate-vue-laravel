@@ -13,6 +13,11 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * Summary of timestamps
+     */
+    public $timestamps = true;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
