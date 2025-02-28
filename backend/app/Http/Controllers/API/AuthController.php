@@ -37,18 +37,24 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User registered successfully',
-            'user'    => $user,
-            'token'   => $token,
+            'user'    => array_merge($user->toArray(), ['token' => $token]),
         ], 201);
     }
 
     // User Login
     public function login(Request $request): JsonResponse
     {
-        $request->validate([
+        $validatedData = Validator::make($request->all(), [
             'email'    => 'required|email',
             'password' => 'required',
         ]);
+
+        if ($validatedData->fails()) {
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors'  => $validatedData->errors(),
+            ], 422);
+        }
 
         $user = User::where('email', $request->email)->first();
 
@@ -64,8 +70,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login successful',
-            'user'    => $user,
-            'token'   => $token,
+            'user'    => array_merge($user->toArray(), ['token' => $token]),
         ], 200);
     }
 }
