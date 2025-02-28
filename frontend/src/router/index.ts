@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +10,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'Dashboard',
-      component: () => import('../views/Pages/BlankPage.vue'),
+      component: () => import('@/views/Pages/BlankPage.vue'),
       meta: {
         title: 'Dashboard',
       },
@@ -17,7 +18,7 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'Profile',
-      component: () => import('../views/Others/UserProfile.vue'),
+      component: () => import('@/views/Others/UserProfile.vue'),
       meta: {
         title: 'Profile',
       },
@@ -25,9 +26,28 @@ const router = createRouter({
     {
       path: '/error-404',
       name: '404 Error',
-      component: () => import('../views/Errors/FourZeroFour.vue'),
+      component: () => import('@/views/Errors/FourZeroFour.vue'),
       meta: {
         title: '404 Error',
+        requiresAuth: false,
+      },
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('@/views/Auth/Login.vue'),
+      meta: {
+        title: 'Login',
+        requiresAuth: false,
+      },
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: () => import('@/views/Auth/Register.vue'),
+      meta: {
+        title: 'Resgister',
+        requiresAuth: false,
       },
     },
   ],
@@ -36,6 +56,11 @@ const router = createRouter({
 export default router
 
 router.beforeEach((to, from, next) => {
-  document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
-  next()
+  if ((to.meta.requiresAuth !== false)
+      && ! useAuthStore().isAuthenticated
+    ) {
+      next('/login')
+  } else {
+      next()
+  }
 })
