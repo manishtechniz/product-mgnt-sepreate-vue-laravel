@@ -8,14 +8,10 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest' // Identifi
 
 axios.defaults.headers.common['Accept'] = 'application/json' // Ensures Laravel returns JSON responses
 
-const token = JSON.parse(localStorage.getItem('user'))?.token;
+const token = JSON.parse(localStorage.getItem('user'))?.token || JSON.parse(sessionStorage.getItem('user'))?.token;
 
 if (token) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
-export default {
-    install(app) {
-        app.config.globalProperties.$axios = axios;
-    },
-};
+export default axios;

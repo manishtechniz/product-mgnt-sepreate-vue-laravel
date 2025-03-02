@@ -56,11 +56,23 @@ const router = createRouter({
 export default router
 
 router.beforeEach((to, from, next) => {
+  /**
+   * Redirect to login page if user is not logged in and tries to access a page that requires authentication
+   */
   if ((to.meta.requiresAuth !== false)
-      && ! useAuthStore().isAuthenticated
+      && ! useAuthStore().isUserLoggedIn()
     ) {
       next('/login')
-  } else {
-      next()
   }
+
+  /**
+   * Redirect to dashboard if user is logged in and tries to access login page
+   */
+  if (to.path === '/login' 
+      && useAuthStore().isUserLoggedIn()
+    ) {
+    next('/')
+  }
+
+  next()
 })

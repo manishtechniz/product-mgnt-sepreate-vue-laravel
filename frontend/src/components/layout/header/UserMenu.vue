@@ -43,8 +43,8 @@
         </li>
       </ul>
       <router-link
-        to="/signin"
-        @click="signOut"
+        to="/login"
+        @click="logOut"
         class="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
       >
         <LogoutIcon
@@ -61,6 +61,7 @@
 import { UserCircleIcon, ChevronDownIcon, LogoutIcon, SettingsIcon, InfoCircleIcon } from '@/icons'
 import { RouterLink } from 'vue-router'
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
@@ -79,9 +80,9 @@ const closeDropdown = () => {
   dropdownOpen.value = false
 }
 
-const signOut = () => {
-  // Implement sign out logic here
-  console.log('Signing out...')
+const logOut = () => {
+  useAuthStore().logout();
+
   closeDropdown()
 }
 

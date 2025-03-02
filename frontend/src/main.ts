@@ -20,7 +20,44 @@ import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
  * all the `vee-validate` settings.
  */
 import { configure, defineRule, Field, Form, ErrorMessage } from "vee-validate";
+import { localize } from "@vee-validate/i18n";
+import en from "@vee-validate/i18n/dist/locale/en.json";
 import * as AllRules from '@vee-validate/rules';
+
+/**
+ * Create a custom rule for phone number validation.
+ */
+defineRule("phone", (value: string) => {
+    if (! value || ! value.length) {
+        return true;
+    }
+
+    if (!/^\+?\d+$/.test(value)) {
+        return false;
+    }
+
+    return true;
+});
+
+configure({
+    /**
+     * Built-in error messages and custom error messages are available. Multiple
+     * locales can be added in the same way.
+     */
+    generateMessage: localize({
+        en: {
+            ...en,
+            messages: {
+                ...en.messages,
+                phone: "This {field} must be a valid phone number",
+            },
+        },
+    }),
+
+    validateOnBlur: true,
+    validateOnInput: true,
+    validateOnChange: true,
+});
 
 /**
  * Registration of all global validators.
