@@ -1,49 +1,17 @@
 <script setup>
-import { computed, defineProps, defineEmits, onMounted } from 'vue';
+import { defineProps, defineEmits, onMounted } from 'vue';
 import { SuccessIcon, ErrorIcon, WarningIcon, InfoCircleIcon } from '@/icons'
 
 // Define props
 const props = defineProps({
   flash: {
     type: Object,
-    required: true
+    required: true,
+    default: 'success',
   }
 });
 
 const emit = defineEmits(['remove']);
-
-const iconClasses = computed(() => ({
-  success: 'text-success-500',
-  error: 'icon-cancel-1',
-  warning: 'icon-information',
-  info: 'icon-processing',
-}));
-
-const typeStyles = computed(() => ({
-  success: {
-    container: 'background: #059669',
-    message: 'color: #FFFFFF',
-    icon: 'color: #059669'
-  },
-
-  error: {
-    container: 'background: #EF4444',
-    message: 'color: #FFFFFF',
-    icon: 'color: #EF4444'
-  },
-
-  warning: {
-    container: 'background: #FACC15',
-    message: 'color: #1F2937',
-    icon: 'color: #FACC15'
-  },
-
-  info: {
-    container: 'background: #0284C7',
-    message: 'color: #FFFFFF',
-    icon: 'color: #0284C7'
-  },
-}));
 
 const remove = () => {
   emit('remove', props.flash);
