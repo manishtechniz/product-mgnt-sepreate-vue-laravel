@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
     ];
 
@@ -50,5 +50,33 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
         ];
+    }
+
+    /**
+     * Disclose custom attribute for json data.
+     */
+    protected $appends = ['first_name', 'last_name'];
+
+    /**
+     * Get the user's first name.
+     */
+    public function getFirstNameAttribute(): string
+    {
+        return explode(' ', $this->name)[0];
+    }
+
+    /**
+     * Get the user's last name.
+     */
+    public function getLastNameAttribute(): string
+    {
+        $nameParts = explode(' ', $this->name);
+
+        /**
+         * If the name has more than one part, return the last part including middle name.
+         */
+        return count($nameParts) > 1 
+            ? implode(' ', array_slice($nameParts, 1)) 
+            : '';
     }
 }

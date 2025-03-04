@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function register(Request $request): JsonResponse
     {   
         $validatedData = Validator::make($request->all(),[
-            'name'     => 'required|string|max:255',
+            'name'     => 'required|max:20',
             'email'    => 'required|email|unique:users',
             'password' => 'required|min:6',
         ]);
@@ -63,7 +63,7 @@ class AuthController extends Controller
         ) {
             return response()->json([
                 'message' => 'Invalid credentials',
-            ], 422);
+            ], 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
