@@ -188,11 +188,11 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import FullScreenLayout from '@/components/layout/FullScreenLayout.vue'
 import emitter from '@/plugins/emitter'
 import axois from '@/plugins/axios'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
 import VButton from '@/components/common/VButton.vue'
 
 const showPassword = ref(false)

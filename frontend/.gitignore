@@ -18,8 +18,9 @@ coverage
 /cypress/screenshots/
 
 #Ignore testing files
-**/common/Test.vue
+**/common/test.*
 **/*/* copy*.*
+**/test
 
 # Editor directories and files
 .vscode/*

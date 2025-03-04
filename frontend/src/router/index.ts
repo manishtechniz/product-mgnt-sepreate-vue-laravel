@@ -24,6 +24,15 @@ const router = createRouter({
       },
     },
     {
+      path: '/category',
+      name: 'Category',
+      component: () => import('@/views/Category/Categories.vue'),
+      meta: {
+        title: 'Category',
+        requiresAuth: false,
+      },
+    },
+    {
       path: '/error-404',
       name: '404 Error',
       component: () => import('@/views/Errors/FourZeroFour.vue'),
