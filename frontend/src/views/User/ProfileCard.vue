@@ -120,6 +120,7 @@
         </button>
       </div>
     </div>
+
     <Modal v-if="isProfileInfoModal" @close="isProfileInfoModal = false">
       <template #body>
         <div

@@ -20,10 +20,10 @@
               <div>
 
               <v-form 
-                v-slot="{errors, handleSubmit }"
+                v-slot="{errors, isSubmitting,  handleSubmit }"
               >
                 <form
-                    @submit="handleSubmit($event, handleSubmitt)"
+                    @submit="handleSubmit($event, loginHandle)"
                 >
                   <div class="space-y-5">
                     <!-- Email -->
@@ -39,6 +39,7 @@
                         name="email"
                         placeholder="info@gmail.com"
                         rules="required|email"
+                        value="manishtechniz@gmail.com"
                         class="form-control"
                         :class="[errors.email ? 'border-error-300 focus' : '']"
                       />
@@ -59,6 +60,7 @@
                           name="password"
                           placeholder="Enter your password"
                           :rules="{required: true, min: 6}"
+                           value="12345678"
                           class="form-control"
                           :class="[errors.email ? 'border-error-300 focus' : '']"
                         />
@@ -151,17 +153,14 @@
                       </div>
                     </div>
                     
-                    <!-- Button -->
-                    <div>
-                      <button
-                        type="submit"
-                        class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 disabled:opacity-60"
-                        :class="submitting ? 'cursor-not-allowed' : ''"
-                        :disabled="submitting"
-                      >
-                        Login
-                      </button>
-                    </div>
+                    <!-- Submit Button -->
+                    <VButton
+                      type="submit"
+                      title="Login"
+                      :loading="isSubmitting"
+                      :disabled="isSubmitting"
+                      :class="isSubmitting ? 'cursor-not-allowed' : ''"
+                    />
                   </div>
                 </form>
               </v-form>
@@ -194,10 +193,10 @@ import emitter from '@/plugins/emitter'
 import axois from '@/plugins/axios'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import VButton from '@/components/common/VButton.vue'
 
 const showPassword = ref(false)
 const keepLoggedIn = ref(false)
-const submitting = ref(false)
 
 let authStore = useAuthStore();
 const router = useRouter();
@@ -206,22 +205,20 @@ const togglePasswordVisibility = () => {
   showPassword.value = ! showPassword.value
 }
 
-const handleSubmitt = (params, { resetForm, setErrors  }) => {
-  submitting.value = true;
-
-  axois.post('/login', params)
+const loginHandle = async (params, { resetForm, setErrors  }) => {
+  await axois.post('/login', params)
       .then(async (response) => {
-
         authStore.isKeepLogin = keepLoggedIn.value;
-
+        
         resetForm();
 
         emitter.emit('add-flash', { type: 'success', message: response.data.message });
 
         /**
-         * Save the user data in local.
+         * Save the user data in local & Add global token for axois request.
          */
-        await authStore.login(response.data.user);
+        await authStore.save(response.data.user);
+        await authStore.setToken();
 
         /**
          * Redirect to the home page.
@@ -229,10 +226,14 @@ const handleSubmitt = (params, { resetForm, setErrors  }) => {
         router.push('/')
       })
       .catch(error => {
-          emitter.emit('add-flash', { type: 'error', message: error.response.data.message });
-      })
-      .then(() => {
-          submitting.value = false;
+        console.log(error);
+          if (error.status == 422) {
+              setErrors(error.response.data.errors);
+
+              return;
+          }
+
+          emitter.emit('add-flash', { type: 'error', message: error.response?.data?.message ?? "Something went wrong!" });
       });
 }
 </script>

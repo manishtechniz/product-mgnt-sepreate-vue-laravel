@@ -18,7 +18,7 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'Profile',
-      component: () => import('@/views/Others/UserProfile.vue'),
+      component: () => import('@/views/User/UserProfile.vue'),
       meta: {
         title: 'Profile',
       },
@@ -50,6 +50,16 @@ const router = createRouter({
         requiresAuth: false,
       },
     },
+
+    {
+      path: '/test',
+      name: 'Test',
+      component: () => import('@/components/common/Test.vue'),
+      meta: {
+        title: 'Test',
+        requiresAuth: false,
+      },
+    },
   ],
 })
 
@@ -60,7 +70,7 @@ router.beforeEach((to, from, next) => {
    * Redirect to login page if user is not logged in and tries to access a page that requires authentication
    */
   if ((to.meta.requiresAuth !== false)
-      && ! useAuthStore().isUserLoggedIn()
+      && ! useAuthStore().isUserLoggedIn
     ) {
       next('/login')
   }
@@ -69,7 +79,7 @@ router.beforeEach((to, from, next) => {
    * Redirect to dashboard if user is logged in and tries to access login page
    */
   if (to.path === '/login' 
-      && useAuthStore().isUserLoggedIn()
+      && useAuthStore().isUserLoggedIn
     ) {
     next('/')
   }

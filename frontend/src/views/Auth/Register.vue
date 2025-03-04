@@ -17,10 +17,10 @@
               <div>
 
               <v-form 
-                v-slot="{errors, handleSubmit }"
+                v-slot="{errors, isSubmitting, handleSubmit }"
               >
                 <form
-                    @submit="handleSubmit($event, handleSubmitt)"
+                    @submit="handleSubmit($event, registerHandle)"
                 >
                   <div class="space-y-5">
                      <!-- Name -->
@@ -167,18 +167,15 @@
                         </label>
                       </div>
                     </div>
-                    
-                    <!-- Button -->
-                    <div>
-                      <button
-                        type="submit"
-                        class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 disabled:opacity-60"
-                        :class="submitting ? 'cursor-not-allowed' : ''"
-                        :disabled="submitting"
-                      >
-                        Login
-                      </button>
-                    </div>
+
+                    <!-- Submit Button -->
+                    <VButton
+                      type="submit"
+                      title="Register"
+                      :loading="isSubmitting"
+                      :disabled="isSubmitting"
+                      :class="isSubmitting ? 'cursor-not-allowed' : ''"
+                    />
                   </div>
                 </form>
               </v-form>
@@ -223,10 +220,8 @@ const togglePasswordVisibility = () => {
   showPassword.value = ! showPassword.value
 }
 
-const handleSubmitt = (params, { resetForm, setErrors  }) => {
-  submitting.value = true;
-
-  axois.post('/register', params)
+const registerHandle = async (params, { resetForm, setErrors  }) => {
+  await axois.post('/register', params)
       .then(async (response) => {
         authStore.isKeepLogin = keepLoggedIn.value;
 
@@ -235,9 +230,10 @@ const handleSubmitt = (params, { resetForm, setErrors  }) => {
         emitter.emit('add-flash', { type: 'success', message: response.data.message });
 
         /**
-         * Save the user data in local.
+         * Save the user data in local & Add global token for axois request.
          */
-        await authStore.login(response.data.user);
+        await authStore.save(response.data.user);
+        await authStore.setToken();
 
         /**
          * Redirect to the home page.
@@ -245,10 +241,13 @@ const handleSubmitt = (params, { resetForm, setErrors  }) => {
         router.push('/')
       })
       .catch(error => {
-        emitter.emit('add-flash', { type: 'error', message: error.response.data.message });
-      })
-      .then(() => {
-          submitting.value = false;
+        if (error.status == 422) {
+            setErrors(error.response.data.errors);
+
+            return;
+        }
+
+        emitter.emit('add-flash', { type: 'error', message: error.response.data.message ?? "Something went wrong!" });
       });
 }
 </script>

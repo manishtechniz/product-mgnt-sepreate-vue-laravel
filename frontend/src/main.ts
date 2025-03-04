@@ -14,6 +14,9 @@ import router from './router'
 
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
+import Modal from '@/components/common/Modal.vue'
+import VButton from '@/components/common/VButton.vue'
+import VLabel from '@/components/common/VLabel.vue'
 
 /**
  * We are defining all the global rules here and configuring
@@ -38,6 +41,8 @@ defineRule("phone", (value: string) => {
 
     return true;
 });
+
+defineRule("", () => true);
 
 configure({
     /**
@@ -81,6 +86,9 @@ app.component("VField", Field);
 app.component("VErrorMessage", ErrorMessage);
 app.component('AdminLayout', AdminLayout)
 app.component('PageBreadcrumb', PageBreadcrumb)
+app.component('Modal', Modal)
+app.component('VButton', VButton)
+app.component('VLabel', VLabel)
 
 window.addEventListener("load", function (event) {
     app.mount("#app");

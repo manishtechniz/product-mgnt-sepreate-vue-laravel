@@ -8,7 +8,7 @@
         <img src="/images/user/owner.jpg" alt="User" />
       </span>
 
-      <span class="block mr-1 font-medium text-theme-sm">Musharof </span>
+      <span class="block mr-1 font-medium text-theme-sm capitalize">{{ auth.user?.name }} </span>
 
       <ChevronDownIcon :class="{ 'rotate-180': dropdownOpen }" />
     </button>
@@ -20,10 +20,10 @@
     >
       <div>
         <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-          Musharof Chowdhury
+          {{ auth.user?.name }}
         </span>
         <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-          randomuser@pimjo.com
+          {{ auth.user?.email}}
         </span>
       </div>
 
@@ -65,15 +65,14 @@ import { useAuthStore } from '@/stores/auth'
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
+const auth = useAuthStore();
 
 const menuItems = [
   { href: '/profile', icon: UserCircleIcon, text: 'Edit profile' },
-  { href: '/chat', icon: SettingsIcon, text: 'Account settings' },
-  { href: '/profile', icon: InfoCircleIcon, text: 'Support' },
 ]
 
 const toggleDropdown = () => {
-  dropdownOpen.value = !dropdownOpen.value
+  dropdownOpen.value = ! dropdownOpen.value
 }
 
 const closeDropdown = () => {
@@ -81,7 +80,7 @@ const closeDropdown = () => {
 }
 
 const logOut = () => {
-  useAuthStore().logout();
+  auth.logout();
 
   closeDropdown()
 }
