@@ -37,7 +37,7 @@
                         placeholder="John Doe"
                         rules="required|min:3"
                         class="form-control"
-                        :class="[errors.email ? 'border-error-300 focus' : '']"
+                        :class="[errors.name ? 'border-error-300 focus' : '']"
                       />
 
                       <v-error-message name="name" class="mt-1.5 text-theme-xs text-error-500" />
@@ -77,7 +77,7 @@
                           placeholder="Enter your password"
                           :rules="{required: true, min: 6}"
                           class="form-control"
-                          :class="[errors.email ? 'border-error-300 focus' : '']"
+                          :class="[errors.password ? 'border-error-300 focus' : '']"
                         />
 
                         <span

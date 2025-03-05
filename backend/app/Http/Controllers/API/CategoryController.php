@@ -13,13 +13,18 @@ class CategoryController extends Controller
     /**
      * List all Categories
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        $categories = Category::paginate(10);
+        $query = Category::query();
+        
+        /**
+         * Set sorting and filter queries using helper function.
+         */
+        setQueryBuilder($query);
 
         return response()->json([
-            'message'    => 'Categories retrieved successfully',
-            'categories' => $categories
+            'message' => 'Categories retrieved successfully',
+            'data'    => applyPaginate($query)
         ], 200);
     }
 

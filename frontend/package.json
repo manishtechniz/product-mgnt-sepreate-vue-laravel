@@ -25,6 +25,7 @@
     "@vee-validate/rules": "^4.15.0",
     "apexcharts": "^4.4.0",
     "axios": "^1.8.1",
+    "boxicons": "^2.1.4",
     "dropzone": "^6.0.0-beta.2",
     "flatpickr": "^4.6.13",
     "jsvectormap": "^1.6.0",

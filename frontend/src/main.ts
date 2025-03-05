@@ -1,11 +1,20 @@
 import './assets/main.css'
 
-// Import Swiper styles
+/**
+ * Import Swiper styles
+ */
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'jsvectormap/dist/jsvectormap.css'
 import 'flatpickr/dist/flatpickr.css'
+
+/**
+ * Import box icon
+ */
+import 'boxicons'
+import 'boxicons/css/boxicons.min.css'
+import 'boxicons/dist/boxicons.js';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -17,6 +26,7 @@ import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
 import Modal from '@/components/common/Modal.vue'
 import VButton from '@/components/common/VButton.vue'
 import VLabel from '@/components/common/VLabel.vue'
+import VDatagrid from '@/components/common/VDatagrid.vue'
 
 /**
  * We are defining all the global rules here and configuring
@@ -89,6 +99,7 @@ app.component('PageBreadcrumb', PageBreadcrumb)
 app.component('Modal', Modal)
 app.component('VButton', VButton)
 app.component('VLabel', VLabel)
+app.component('VDatagrid', VDatagrid)
 
 window.addEventListener("load", function (event) {
     app.mount("#app");

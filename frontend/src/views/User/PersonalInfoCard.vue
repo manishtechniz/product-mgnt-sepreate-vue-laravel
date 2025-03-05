@@ -15,7 +15,7 @@
 
             <div>
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Last Name</p>
-              <p class="text-sm font-medium text-gray-800 dark:text-white/90 capitalize">{{ user?.last_name ?? "-" }}</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white/90 capitalize">{{ user?.last_name || "-" }}</p>
             </div>
 
             <div>
@@ -56,7 +56,7 @@
     </div>
 
     <!-- Profile Update Modal -->
-    <v-form 
+    <v-form
       v-slot="{errors, isSubmitting,  handleSubmit }"
     >
       <form

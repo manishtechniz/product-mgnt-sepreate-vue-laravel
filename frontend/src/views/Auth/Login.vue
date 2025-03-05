@@ -62,7 +62,7 @@
                           :rules="{required: true, min: 6}"
                            value="12345678"
                           class="form-control"
-                          :class="[errors.email ? 'border-error-300 focus' : '']"
+                          :class="[errors.password ? 'border-error-300 focus' : '']"
                         />
 
                         <span
