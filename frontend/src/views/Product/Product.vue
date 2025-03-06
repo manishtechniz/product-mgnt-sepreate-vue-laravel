@@ -297,10 +297,22 @@
       sortable: true,
     },
     {
-      key: 'description',
-      label: 'Description',
-      filterable: false,
-      sortable: false,
+      key: 'price',
+      label: 'Price',
+      filterable: true,
+      sortable: true,
+    },
+    {
+      key: 'discount',
+      label: 'Discount',
+      filterable: true,
+      sortable: true,
+    },
+    {
+      key: 'price',
+      label: 'Price',
+      filterable: true,
+      sortable: true,
     },
     {
       key: 'status',
