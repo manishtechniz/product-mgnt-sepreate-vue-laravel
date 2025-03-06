@@ -15,11 +15,16 @@ class ProductController extends Controller
      */
     public function index(): JsonResponse
     {
-        $products = Product::paginate(10);
+        $query = Product::query();
+        
+        /**
+         * Set sorting and filter queries using helper function.
+         */
+        setQueryBuilder($query);
 
         return response()->json([
-            'message'    => 'Products retrieved successfully',
-            'products' => $products
+            'message' => 'Product retrieved successfully',
+            'data'    => applyPaginate($query)
         ], 200);
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 
@@ -31,7 +32,7 @@ class CategoryController extends Controller
     /**
      * Create Category
      */
-    public function create(): JsonResponse
+    public function store(): JsonResponse
     {
         $validate = Validator::make(request()->all(), [
             'name'        => 'required|max:50',
@@ -67,7 +68,7 @@ class CategoryController extends Controller
     /**
      * Update Category
      */
-    public function update($id): JsonResponse
+    public function update(Request $request, $id)
     {
         $validate = Validator::make(request()->all(), [
             'name'        => 'nullable|max:50',
@@ -88,7 +89,7 @@ class CategoryController extends Controller
         if (request()->has('name')) {
             $category->name = request('name');
         }
-        
+
         if (request()->has('status')) {
             $category->status = request('status');
         }

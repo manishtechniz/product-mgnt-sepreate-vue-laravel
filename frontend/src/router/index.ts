@@ -29,7 +29,16 @@ const router = createRouter({
       component: () => import('@/views/Category/Categories.vue'),
       meta: {
         title: 'Category',
-        requiresAuth: false,
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/product',
+      name: 'Products',
+      component: () => import('@/views/Product/Product.vue'),
+      meta: {
+        title: 'Product',
+        requiresAuth: true,
       },
     },
     {

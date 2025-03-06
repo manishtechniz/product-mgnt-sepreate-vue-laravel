@@ -248,8 +248,14 @@ const menuGroups = [
       },
       {
         icon: PageIcon,
-        name: "Category",
+        name: "Categories",
         path: "/category",
+      },
+
+      {
+        icon: PageIcon,
+        name: "Products",
+        path: "/product",
       },
     ],
   },

@@ -6,7 +6,7 @@ axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL // Change this to you
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest' // Identifies the request as AJAX
 
-axios.defaults.headers.common['Accept'] = 'application/json' // Ensures Laravel returns JSON responses
+// axios.defaults.headers.common['Accept'] = 'application/json' // Ensures Laravel returns JSON responses
 
 const token = JSON.parse(localStorage.getItem('user'))?.token || JSON.parse(sessionStorage.getItem('user'))?.token;
 

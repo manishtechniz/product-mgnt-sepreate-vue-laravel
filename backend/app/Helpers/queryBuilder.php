@@ -8,15 +8,21 @@ if (! function_exists('setQueryBuilder')) {
     {
         $queryParams = request()->query() ?? null;
 
-        $sort = $queryParams["sort"] ?? "asc";
+        $sort = $queryParams["sort"] ?? "desc";
 
-        $columnSort = $queryParams["columnSort"] ?? null;
+        $columnSort = $queryParams["columnSort"] ?? 'id';
         
         $filter = $queryParams["filter"] ?? null;
 
         $columnFilters = json_decode($queryParams["columnFilters"] ?? "[]");
 
         $filter = request()->query('filter') ?? null;
+
+        $status = request()->query('status');
+
+        if (! empty($status)) {
+            $query->where('status', $status);
+        }
 
         /**
          * Apply Filters

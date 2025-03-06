@@ -18,15 +18,11 @@
             @submit="handleSubmit($event, createAndUpdateHandle)"
           >
             <Modal
-              header="Edit Profile"
+              :header="'Product'"
               ref="createAndUpdateModal"
             >
               <template #body >
                 <div>
-                  <h5 class="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                    Personal Information
-                  </h5>
-
                   <div class="grid grid-cols-1 gap-x-6 gap-y-5 llg:grid-cols-2">
                     <!-- Id  -->
                     <v-field 
@@ -53,31 +49,98 @@
                       <v-error-message name="name" class="mt-1.5 text-theme-xs text-error-500" />
                     </div>
 
-                    <!-- Description -->
+                    <!-- Category -->
                     <div class="col-span-2 lg:col-span-1">
                       <v-label
-                        label="Description"
+                        label="Category"
                         :required=true
                       />
 
                       <v-field
-                        name="description"
-                        type="textarea"
+                        name="category_id"
+                        type="select"
                         v-slot="{ field }"
-                        rules="required|min:5"
-                        label="Description"
+                        rules="required"
+                        label="Category"
                       >
-                        <textarea
-                          name="description"
-                          placeholder="Write description ..."
+                        <select
+                          name="category_id"
                           v-bind="field"
-                          class="form-control h-20"
-                          :class="[errors.description ? 'border-error-300 focus' : '']"
+                          class="form-control"
+                          :class="[errors.category_id ? 'border-error-300 focus' : '']"
                         >
-                        </textarea>
+                            <option 
+                                v-for="(category, index) in categories"
+                                :key="index"
+                                :value="category.id"
+                                class="capitalize"
+                            > 
+                                {{ category.name }}
+                            </option>
+                        </select>
                       </v-field>
 
-                      <v-error-message name="description" class="mt-1.5 text-theme-xs text-error-500" />
+                      <v-error-message name="status" class="mt-1.5 text-theme-xs text-error-500" />
+                    </div>
+
+                     <!-- Price -->
+                    <div class="col-span-2 lg:col-span-1">
+                      <v-label
+                        label="Price"
+                        :required=true
+                      />
+
+                        <v-field
+                            type="number"
+                            name="price"
+                            v-slot="{ field }"
+                            rules="required"
+                            label="Price"
+                            class="form-control"
+                            :class="[errors.price ? 'border-error-300 focus' : '']"
+                        />
+
+                        <v-error-message name="price" class="mt-1.5 text-theme-xs text-error-500" />
+                    </div>
+
+                     <!-- Discount -->
+                     <div class="col-span-2 lg:col-span-1">
+                      <v-label
+                        label="Discount"
+                        :required=true
+                      />
+
+                        <v-field
+                            type="number"
+                            name="discount"
+                            v-slot="{ field }"
+                            rules="required"
+                            label="Discount"
+                            class="form-control"
+                            :class="[errors.price ? 'border-error-300 focus' : '']"
+                        />
+
+                        <v-error-message name="discount" class="mt-1.5 text-theme-xs text-error-500" />
+                    </div>
+
+                     <!-- Discount -->
+                     <div class="col-span-2 lg:col-span-1">
+                      <v-label
+                        label="Stock"
+                        :required=true
+                      />
+
+                        <v-field
+                            type="number"
+                            name="stock"
+                            v-slot="{ field }"
+                            rules="required|numeric"
+                            label="Stock"
+                            class="form-control"
+                            :class="[errors.price ? 'border-error-300 focus' : '']"
+                        />
+
+                        <v-error-message name="stock" class="mt-1.5 text-theme-xs text-error-500" />
                     </div>
 
                     <!-- Status -->
@@ -106,6 +169,33 @@
                       </v-field>
 
                       <v-error-message name="status" class="mt-1.5 text-theme-xs text-error-500" />
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-span-2 lg:col-span-1">
+                      <v-label
+                        label="Description"
+                        :required=true
+                      />
+
+                      <v-field
+                        name="description"
+                        type="textarea"
+                        v-slot="{ field }"
+                        rules="required|min:5"
+                        label="Description"
+                      >
+                        <textarea
+                          name="description"
+                          placeholder="Write description ..."
+                          v-bind="field"
+                          class="form-control h-20"
+                          :class="[errors.description ? 'border-error-300 focus' : '']"
+                        >
+                        </textarea>
+                      </v-field>
+
+                      <v-error-message name="description" class="mt-1.5 text-theme-xs text-error-500" />
                     </div>
 
                     <!-- Image -->
@@ -147,7 +237,7 @@
 
         <!-- Datagrid -->
         <VDatagrid
-          :url="'/category'"
+          :url="'/product'"
           :columns="header"
           :actions="actions"
           ref="dataGrid"
@@ -181,11 +271,12 @@
   </template>
   
   <script setup>  
-  import { ref, useTemplateRef, computed } from "vue";
+  import { ref, useTemplateRef, computed, onMounted } from "vue";
   import axois from '@/plugins/axios'
   import emitter from '@/plugins/emitter'
 
-  const currentPageTitle = ref("Categories");
+  const currentPageTitle = ref("Products");
+  const categories = ref([]);
   const createAndUpdateModal = useTemplateRef('createAndUpdateModal')
   const modelForm = useTemplateRef('modelForm')
   const dataGrid = useTemplateRef('dataGrid')
@@ -193,7 +284,7 @@
   const selectedFile = ref(null);
 
   const header = [
-  {
+    {
       key: 'id',
       label: 'Id',
       filterable: true,
@@ -233,14 +324,14 @@
     {
       type: 'delete',
       label: 'Delete',
-      url: '/category',
+      url: '/product',
       method: 'delete',
       closure: () => {}
     },
     {
       type: 'edit',
       label:'Edit',
-      url: '/category/edit',
+      url: '/product',
       method: 'get',
       closure: () => {}
     }
@@ -270,7 +361,7 @@
     }
 
     await axois({
-      url: `/category/${isCreateOperation ? '' : params.id}`,
+      url: `/product/${isCreateOperation ? '' : params.id}`,
       method: (isCreateOperation ? 'post' : 'put'),
       data: params,
       // headers: {
@@ -304,6 +395,23 @@
     });
   }
 
+  /**
+   * Fetch Categories
+   */
+  const fetchCategories = () => {
+  axois({
+      url: `/category`,
+      method: 'get',
+    })
+    .then((response) => {
+        console.log("cateory",response.data.data.data);
+        categories.value = response.data.data.data;
+    })
+    .catch(error => {
+        console.log(error);
+    });
+  }
+
   const editModal = (record) => {
     /**
      * Set vlaues to modal form
@@ -316,4 +424,8 @@
   const handleFileChange = (event) => {
     selectedFile.value = event.target.files[0];
   }
+
+  onMounted(() => {
+    fetchCategories();
+  })
 </script>

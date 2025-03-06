@@ -25,7 +25,9 @@
     </div>
 
     <div class="relative flex flex-col w-full h-full overflow-auto text-gray-700 dark:bg-white/[0.03] dark:text-white/70 bg-white shadow-md rounded-lg bg-clip-border">
-      <table class="w-full text-left table-auto min-w-max ">
+      <table 
+        class="w-full text-left table-auto min-w-max "
+      >
         <slot name="header">
           <thead class="bg-gray-100 dark:bg-gray-900 dark:text-white/70 text-sm">
             <tr>
@@ -89,7 +91,10 @@
         </slot>
       </table>
 
-      <div class="flex justify-between items-center px-4 py-3 flex-col-reverse gap-2 md:flex-row md:gap-0">
+      <div 
+        class="flex justify-between items-center px-4 py-3 flex-col-reverse gap-2 md:flex-row md:gap-0"
+        v-if="paginationDetails?.total"
+      >
         <div class="text-sm text-slate-500">
           Showing {{ paginationDetails?.from ?? 0 }}-{{ paginationDetails?.to ?? 0 }} of {{ paginationDetails?.total }}
         </div>
@@ -150,10 +155,11 @@ const loading = ref(false);
 const currentUrl = ref(props.url);
 
 const query = reactive({ 
-    itemsPerPage: 2,
-    sort: 'asc',
+    itemsPerPage: 10,
+    sort: 'desc',
     columnSort: '',
     filter: '',
+    status: null,
     columnFilters: "[]",
 });
 
@@ -174,11 +180,13 @@ const fetchRecords = async (query) => {
     params: query
   })
   .then(response => {
+    console.log(response);
     paginationDetails.value = response.data.data;
 
     records.value = paginationDetails.value.data;
   })
   .catch(error => {
+    console.log(error);
       if (error.status == 422) {
           setErrors(error.response.data.errors);
 
@@ -186,6 +194,9 @@ const fetchRecords = async (query) => {
       }
 
       emitter.emit('add-flash', { type: 'error', message: error.response?.data?.message ?? "Something went wrong!" });
+  })
+  .then(() => {
+    loading.value = false;
   })
 };
 
