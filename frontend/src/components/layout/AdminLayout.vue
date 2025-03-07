@@ -15,6 +15,9 @@
       <!-- Add flash message toast -->
       <!-- NOTE: Handle by global event -->
       <VFlashGroup />
+
+      <!-- Add confirm modal -->
+      <VConfirm />
     </div>
   </div>
 </template>

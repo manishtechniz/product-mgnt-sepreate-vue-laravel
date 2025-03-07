@@ -243,24 +243,28 @@ const sortAction = (column) => {
  * Delete record
  */
  const deleteAction = async (record, action) => {
-  await axois({
-    method : action.method,
-    url: `${action.url}/${record.id}`
-  })
-  .then(response => {
-    refresh();
+  emitter.emit('open-confirm-modal', {
+    agree: async () => {
+      await axois({
+        method : action.method,
+        url: `${action.url}/${record.id}`
+      })
+      .then(response => {
+        refresh();
 
-    emitter.emit('add-flash', { type: 'success', message: response.data.message });
-  })
-  .catch(error => { 
-      if (error.status == 422) {
-          setErrors(error.response.data.errors);
+        emitter.emit('add-flash', { type: 'success', message: response.data.message });
+      })
+      .catch(error => { 
+          if (error.status == 422) {
+              setErrors(error.response.data.errors);
 
-          return;
-      }
+              return;
+          }
 
-      emitter.emit('add-flash', { type: 'error', message: error.response?.data?.message ?? "Something went wrong!" });
-  })
+          emitter.emit('add-flash', { type: 'error', message: error.response?.data?.message ?? "Something went wrong!" });
+      })
+    }
+  });
 }
 
 /**

@@ -27,6 +27,7 @@ import Modal from '@/components/common/Modal.vue'
 import VButton from '@/components/common/VButton.vue'
 import VLabel from '@/components/common/VLabel.vue'
 import VDatagrid from '@/components/common/VDatagrid.vue'
+import VConfirm from '@/components/common/VConfirm.vue'
 
 /**
  * We are defining all the global rules here and configuring
@@ -100,6 +101,7 @@ app.component('Modal', Modal)
 app.component('VButton', VButton)
 app.component('VLabel', VLabel)
 app.component('VDatagrid', VDatagrid)
+app.component('VConfirm', VConfirm)
 
 window.addEventListener("load", function (event) {
     app.mount("#app");
