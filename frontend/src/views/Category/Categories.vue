@@ -206,6 +206,17 @@
       sortable: true,
     },
     {
+      key: 'image_path',
+      label: 'Image',
+      filterable: false,
+      sortable: false,
+      closure: (record) => {
+        return `
+          <img src="${record.image_url}" onerror="this.src='./images/prev.png';" style="height:100px; width: 100px; border-radius:8px"/>
+        `;
+      }
+    },
+    {
       key: 'description',
       label: 'Description',
       filterable: false,
@@ -216,8 +227,8 @@
       label: 'Status',
       filterable: true,
       sortable: true,
-      closure: (value) => {
-        if (value) {
+      closure: (record) => {
+        if (record.status) {
           return `<span class="text-success-500">Active</span>`;
         }
 
@@ -260,22 +271,22 @@
 
     if (!! params?.id) {
       isCreateOperation = false;
-
-      /**
-       * Check file selected or not.
-       */
-      if (!!! selectedFile.value) {
-        formData.append("image", selectedFile.value);
-      }
     }
 
+    /**
+     * Check file selected or not.
+     */
+    if (!! selectedFile.value) {
+      formData.append("image", selectedFile.value);
+    }
+
+    /**
+     * Use post method for updating resources because files/images do'nt work with put method.
+     */
     await axois({
       url: `/category/${isCreateOperation ? '' : params.id}`,
-      method: (isCreateOperation ? 'post' : 'put'),
-      data: params,
-      // headers: {
-      //   "Content-Type": "multipart/form-data",
-      // },
+      method: 'post',
+      data: formData,
     })
     .then(async (response) => {
       resetForm();

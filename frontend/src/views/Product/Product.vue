@@ -199,7 +199,7 @@
                     </div>
 
                     <!-- Image -->
-                    <div class="col-span-2 lg:col-span-1">
+                    <!-- <div class="col-span-2 lg:col-span-1">
                       <v-label
                         label="Image"
                       />
@@ -218,7 +218,7 @@
                       </v-field>
 
                       <v-error-message name="image" class="mt-1.5 text-theme-xs text-error-500" />
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </template>
@@ -319,8 +319,8 @@
       label: 'Status',
       filterable: true,
       sortable: true,
-      closure: (value) => {
-        if (value) {
+      closure: (record) => {
+        if (record.status) {
           return `<span class="text-success-500">Active</span>`;
         }
 

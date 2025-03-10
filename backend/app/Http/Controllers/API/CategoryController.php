@@ -32,10 +32,10 @@ class CategoryController extends Controller
     /**
      * Create Category
      */
-    public function store(): JsonResponse
+    public function store()
     {
         $validate = Validator::make(request()->all(), [
-            'name'        => 'required|max:50',
+            'name'        => 'required|max:50|unique:categories,name',
             'status'      => 'required|boolean',
             'image'       => 'nullable|file|mimes:jpeg,png,jpg',
             'description' => 'nullable|string|max:500',
@@ -52,12 +52,13 @@ class CategoryController extends Controller
         $category->name = request('name');
         $category->status = request('status');
         $category->description = request('description');
+        $category->save();
 
         if (request()->hasFile('image')) {
-            $category->image_path = request()->file('image')->store('category/' . $category->id);
+            $category->update([
+                'image_path' => request()->file('image')->store('category/' . $category->id) 
+            ]);
         }
-
-        $category->save();
 
         return response()->json([
             'message'  => 'Category created successfully',
@@ -68,10 +69,10 @@ class CategoryController extends Controller
     /**
      * Update Category
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         $validate = Validator::make(request()->all(), [
-            'name'        => 'nullable|max:50',
+            'name'        => 'nullable|max:50|unique:categories,name,'. $id,
             'status'      => 'required|boolean',
             'image'       => 'nullable|file|mimes:jpeg,png,jpg',
             'description' => 'nullable|string|max:500',

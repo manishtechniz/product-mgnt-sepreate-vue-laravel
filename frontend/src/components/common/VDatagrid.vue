@@ -54,7 +54,7 @@
           <tbody class="text-sm">
             <tr v-for="(record, index) in records" :key="index" class="hover:bg-slate-50 dark:hover:bg-gray-900 border-b dark:border-gray-900">
               <td v-for="(column, colIndex) in columns" :key="colIndex" class="p-4">
-                <span v-if="column.closure" v-html="column.closure(record[column.key])"></span>
+                <span v-if="column.closure" v-html="column.closure(record)"></span>
                 <span v-else> {{ record[column.key] }}</span>
               </td>
 

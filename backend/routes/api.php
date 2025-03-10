@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('/', [CategoryController::class, 'store'])->name('category_create');
 
-        Route::put('/{id}', [CategoryController::class, 'update'])->name('category_update');
+        Route::post('/{id}', [CategoryController::class, 'update'])->name('category_update');
 
         Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('category_destroy');
     });

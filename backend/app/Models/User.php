@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -55,7 +56,7 @@ class User extends Authenticatable
     /**
      * Disclose custom attribute for json data.
      */
-    protected $appends = ['first_name', 'last_name'];
+    protected $appends = ['first_name', 'last_name', 'image_url'];
 
     /**
      * Get the user's first name.
@@ -78,5 +79,13 @@ class User extends Authenticatable
         return count($nameParts) > 1 
             ? implode(' ', array_slice($nameParts, 1)) 
             : '';
+    }
+
+    /**
+     * Create image url attribute.
+     */
+    public function getImageUrlAttribute()
+    {
+        return Storage::url($this->image);
     }
 }
