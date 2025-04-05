@@ -1,22 +1,7 @@
-# Product Management (V2)
-----------------------------------
+# Product Management
 
-There are some new functionality.
+This project built with seperate laravel backend and vue js frontend. In this, I have created useable and scalable vue js components like as: `VFlashGroup`, `VFlashGroupItem`, `Modal`, `VButton`, `Vconfirm`, `VDatagrid` and `VLabel`
 
-## 1. Add confirm modal component
+Basically, It based on `Product Management with Category`.
 
-If you want use `confirm modal` then have to use global event `emitter.emit('open-confirm-modal', data);`
-
-By default, has data `emitter.on('open-confirm-modal', open);`:
-```js
-const open = ({
-    title: newTitle = "Are you sure",
-    message: newMessage = "Are you sure you want to perform this action?",
-    options: newOptions = {
-        btnDisagree: "Disagree",
-        btnAgree: "Agree",
-    },
-    agree = () => {},
-    disagree = () => {},
-}) => {
-```
+> NOTE: I used starter template for this project :)
